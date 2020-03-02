@@ -8,9 +8,10 @@ filename = "test"
 fileformat = "xlsx"
 maxlength = 15
 
-characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 "
-#characters = "0123456789"
+#characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 "
+characters = "0123"
 maxlength += 1
+stop = False
 
 def pw_guess(i):
 	res = itertools.product(characters, repeat=i)
@@ -34,14 +35,16 @@ for i in range(1,maxlength):
 	for guess in guess_generator:
 		passwd = ''.join(guess)
 
-		file.load_key(password=passwd)
-
-		gen_path = "target/temp/"+filename+"-"+passwd+"."+fileformat
-		try:	
+		try:
+			file.load_key(password=passwd)
+			
+			gen_path = "target/temp/"+filename+"-"+passwd+"."+fileformat
 			file.decrypt(open(gen_path, "wb"))
 			print("ketemu password: "+passwd)
+			stop = True
 			break
 		except:
 			print("salah password: "+passwd)
 			os.remove(gen_path)
-		
+	if stop == True:
+		break
