@@ -6,14 +6,14 @@ import itertools
 
 filename = "test"
 fileformat = "xlsx"
-maxlength = 3
+maxlength = 15
 
 characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 "
-characters = "0123456789"
+#characters = "0123456789"
 maxlength += 1
 
 def pw_guess(i):
-	res = itertools.permutations(characters, i)
+	res = itertools.product(characters, repeat=i)
 	for guess in res:
 		yield guess
 
