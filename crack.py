@@ -3,6 +3,9 @@ import os
 import shutil
 import pwd
 
+filename = "test"
+fileformat = "xlsx"
+
 path = "./target/temp"
 if os.path.exists(path) == False:
 	print("creating temp folder")
@@ -13,15 +16,14 @@ if os.path.exists(path) == False:
 		os.umask(original_umask)
 		shutil.chown(path, user=os.getuid(), group=os.getgid())
 
-filename = "test"
-file = msoffcrypto.OfficeFile(open("./target/"+filename+".xlsx", "rb"))
+file = msoffcrypto.OfficeFile(open("./target/"+filename+"."+fileformat, "rb"))
 
 passwd="1234"
 
 file.load_key(password=passwd)
 
 try:
-	file.decrypt(open("target/temp/"+filename+"-"+passwd+".xlsx", "wb"))
+	file.decrypt(open("target/temp/"+filename+"-"+passwd+"."+fileformat, "wb"))
 	print("ketemu password: "+passwd)
 except:
 	print("salah password: "+passwd)
