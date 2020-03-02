@@ -1,3 +1,6 @@
 venv
 target/*
 !target/target.md
+target/temp/*
+!target/temp/temp.md
+.DS_store
