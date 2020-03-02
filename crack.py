@@ -6,10 +6,11 @@ import itertools
 
 filename = "test"
 fileformat = "xlsx"
-maxlength = 5
+maxlength = 3
 
 characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 "
-maxlength=+1
+characters = "0123456789"
+maxlength += 1
 
 def pw_guess(i):
 	res = itertools.permutations(characters, i)
@@ -28,7 +29,7 @@ if os.path.exists(path) == False:
 
 file = msoffcrypto.OfficeFile(open("./target/"+filename+"."+fileformat, "rb"))
 
-for i in range(1,4):
+for i in range(1,maxlength):
 	guess_generator = pw_guess(i)
 	for guess in guess_generator:
 		passwd = ''.join(guess)
@@ -39,6 +40,7 @@ for i in range(1,4):
 		try:	
 			file.decrypt(open(gen_path, "wb"))
 			print("ketemu password: "+passwd)
+			break
 		except:
 			print("salah password: "+passwd)
 			os.remove(gen_path)
