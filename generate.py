@@ -13,7 +13,6 @@ def pw_guess(i):
 
 #Make generator object
 for i in range(1,4):
-	print(i) 
 	guess_generator = pw_guess(i)
 	for guess in guess_generator:
 		str_guess = ''.join(guess)

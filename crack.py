@@ -2,9 +2,19 @@ import msoffcrypto
 import os
 import shutil
 import pwd
+import itertools
 
 filename = "test"
 fileformat = "xlsx"
+maxlength = 5
+
+characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 "
+maxlength=+1
+
+def pw_guess(i):
+	res = itertools.permutations(characters, i)
+	for guess in res:
+		yield guess
 
 path = "./target/temp"
 if os.path.exists(path) == False:
@@ -18,13 +28,18 @@ if os.path.exists(path) == False:
 
 file = msoffcrypto.OfficeFile(open("./target/"+filename+"."+fileformat, "rb"))
 
-passwd="1234"
+for i in range(1,4):
+	guess_generator = pw_guess(i)
+	for guess in guess_generator:
+		passwd = ''.join(guess)
 
-file.load_key(password=passwd)
+		file.load_key(password=passwd)
 
-try:
-	file.decrypt(open("target/temp/"+filename+"-"+passwd+"."+fileformat, "wb"))
-	print("ketemu password: "+passwd)
-except:
-	print("salah password: "+passwd)
-	
+		gen_path = "target/temp/"+filename+"-"+passwd+"."+fileformat
+		try:	
+			file.decrypt(open(gen_path, "wb"))
+			print("ketemu password: "+passwd)
+		except:
+			print("salah password: "+passwd)
+			os.remove(gen_path)
+		
